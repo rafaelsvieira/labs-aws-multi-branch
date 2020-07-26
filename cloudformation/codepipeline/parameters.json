@@ -1,0 +1,10 @@
+[
+  {
+    "ParameterKey": "RepositoryName",
+    "ParameterValue": "finances-api"
+  },
+  {
+    "ParameterKey": "BranchName",
+    "ParameterValue": "master"
+  }
+]

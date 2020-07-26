@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  RepositoryName:
+    Type: String
+    Description: Enter the CodeCommit repository name to source for replication.
+
+  RepositoryDescription:
+    Type: String
+    Description: Description of repository.
+    Default: Repository created by cloudformation.
+
+Resources:
+  MyRepo:
+    Type: AWS::CodeCommit::Repository
+    Properties:
+      RepositoryName: !Ref RepositoryName
+      RepositoryDescription: a description
