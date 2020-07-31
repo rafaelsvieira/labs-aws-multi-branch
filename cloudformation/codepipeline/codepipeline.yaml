@@ -13,6 +13,7 @@ Resources:
   Pipeline:
     Type: AWS::CodePipeline::Pipeline
     Properties:
+      Name: !Join ['-', [!Ref RepositoryName, !Ref BranchName]]
       RoleArn: !Join [':', ['arn:aws:iam:', !Ref 'AWS::AccountId', 'role/labs-codepipeline']]
       ArtifactStore:
         Type: S3
@@ -32,3 +33,40 @@ Resources:
               OutputArtifacts:
                 - Name: SourceOutput
               RunOrder: 1
+        - Name: Build
+          Actions:
+            - Name: Build
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: '1'
+                Provider: CodeBuild
+              InputArtifacts:
+                - Name: SourceOutput
+              OutputArtifacts:
+              - Name: BuildResult
+              Configuration:
+                PrimarySource: SourceOutput
+                ProjectName: !Ref MyCodeBuild
+              RunOrder: 1
+
+  MyCodeBuild:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name: my-build
+      Description: CodeBuild Project
+      ServiceRole: !Join [':', ['arn:aws:iam:', !Ref 'AWS::AccountId', 'role/labs-codepipeline']]
+      Artifacts:
+        Type: CODEPIPELINE
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_SMALL
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:3.0
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: scripts/buildspec.yml
+      TimeoutInMinutes: 10
+      Tags:
+      - Key: Name
+        Value:
+          Fn::Sub: ${AWS::StackName}-my-project

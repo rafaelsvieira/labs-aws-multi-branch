@@ -1,0 +1,26 @@
+#----------------------------------------------------------------------#
+# EventRule to trigger LambdaPipeline lambda
+#----------------------------------------------------------------------#
+
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  CreatePipelineRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Description: "EventRule"
+      EventPattern:
+        source:
+          - aws.codecommit
+        detail-type:
+          - 'CodeCommit Repository State Change'
+        detail:
+          event:
+              - referenceDeleted
+              - referenceCreated
+          referenceType:
+            - branch
+      State: ENABLED
+      Targets:
+      - Arn: !Join [':', ['arn:aws:lambda', !Ref 'AWS::Region', !Ref 'AWS::AccountId', 'function:cloudformation-update']]
+        Id: CreatePipeline
