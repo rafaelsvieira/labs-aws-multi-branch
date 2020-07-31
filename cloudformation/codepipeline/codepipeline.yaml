@@ -53,7 +53,7 @@ Resources:
   MyCodeBuild:
     Type: AWS::CodeBuild::Project
     Properties:
-      Name: my-build
+      Name: !Join ['-', ['Build', !Ref RepositoryName, !Ref BranchName]]
       Description: CodeBuild Project
       ServiceRole: !Join [':', ['arn:aws:iam:', !Ref 'AWS::AccountId', 'role/labs-codepipeline']]
       Artifacts:
