@@ -15,9 +15,6 @@ Resources:
         detail-type:
           - 'CodeCommit Repository State Change'
         detail:
-          event:
-              - referenceDeleted
-              - referenceCreated
           referenceType:
             - branch
       State: ENABLED

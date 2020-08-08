@@ -21,7 +21,7 @@ Resources:
       Stages:
         - Name: Source
           Actions:
-            - Name: CloneRepo
+            - Name: CloneRepo-test-1
               ActionTypeId:
                 Category: Source
                 Owner: AWS
@@ -35,7 +35,7 @@ Resources:
               RunOrder: 1
         - Name: Build
           Actions:
-            - Name: Build
+            - Name: Build-test-1
               ActionTypeId:
                 Category: Build
                 Owner: AWS
@@ -48,7 +48,7 @@ Resources:
               Configuration:
                 PrimarySource: SourceOutput
                 ProjectName: !Ref MyCodeBuild
-              RunOrder: 1
+              RunOrder: 2
 
   MyCodeBuild:
     Type: AWS::CodeBuild::Project
